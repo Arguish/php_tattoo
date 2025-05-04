@@ -4,18 +4,18 @@ Lista de tareas organizadas por apartados para el proyecto "Gestión de Centro d
 
 ## 📦 Configuración del Entorno
 
-- [ ] Instalar PHP 8.x y extensiones necesarias (pdo, mbstring)
-- [ ] Configurar servidor web (Apache/Nginx)
-- [ ] Instalar MySQL/MariaDB y crear usuario de base de datos
-- [ ] Instalar Composer y dependencias (Dompdf, PHPMailer)
-- [ ] Configurar archivo `config/database.php` con credenciales
-- [ ] Configurar archivo `config/mail.php` con datos SMTP
-- [ ] Ajustar permisos de carpetas `storage/` y `logs/`
+- [x] Instalar PHP 8.x y extensiones necesarias (pdo, mbstring)
+- [x] Configurar servidor web (Apache/Nginx)
+- [x] Instalar MySQL/MariaDB y crear usuario de base de datos
+- [x] Instalar Composer y dependencias (Dompdf, PHPMailer)
+- [x] Configurar archivo `config/database.php` con credenciales
+- [x] Configurar archivo `config/mail.php` con datos SMTP
+- [x] Ajustar permisos de carpetas `storage/` y `logs/`
 
 ## 🗄️ Base de Datos
 
 - [ ] Definir y documentar el esquema ER
-- [ ] Crear script SQL `schema.sql` para tablas: `usuarios`, `servicios`, `reservas`, `facturas`
+- [x] Crear script SQL `schema.sql` para tablas: `usuarios`, `servicios`, `reservas`, `facturas`
 - [ ] Probar importación del esquema en entorno local
 - [ ] Escribir migraciones (opcional) para versiones futuras
 
@@ -43,7 +43,7 @@ Lista de tareas organizadas por apartados para el proyecto "Gestión de Centro d
 
 ## 🖥️ Front‑end UI
 
-- [ ] Maquetación de layout principal con Bootstrap
+- [x] Maquetación de layout principal con Bootstrap
 - [ ] Navbar dinámica según rol logueado
 - [ ] Páginas de dashboard por rol (Admin, Artista, Cliente, Recepcionista)
 - [ ] Tablas responsivas de reservas y facturas

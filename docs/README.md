@@ -57,7 +57,7 @@ Aplicación web para la gestión integral de un centro de tatuajes. Permite a ad
    ```
 4. Importa el esquema SQL:
    ```sql
-   CREATE DATABASE tatuajes;
+   CREATE DATABASE IF NOT EXISTS tattoo_db;
    USE tatuajes;
    -- Ejecuta el script schema.sql
    ```
@@ -73,46 +73,69 @@ Aplicación web para la gestión integral de un centro de tatuajes. Permite a ad
    ```
 6. Ajusta permisos de la carpeta `storage/` para PDFs y logs.
 
-## Estructura de la base de datos
+## Esquema de Base de Datos
 
-```sql
--- Usuarios con roles
-CREATE TABLE usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100),
-  email VARCHAR(100) UNIQUE,
-  rol ENUM('admin','artista','cliente','recepcionista'),
-  password VARCHAR(255),
-  creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+```mermaid
+erDiagram
+    usuarios ||--o{ reservas : "cliente"
+    usuarios ||--o{ reservas : "artista"
+    servicios ||--o{ reservas : "servicio"
+    reservas ||--o{ facturas : "genera"
 
--- Servicios ofrecidos
-CREATE TABLE servicios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100),
-  precio DECIMAL(8,2)
-);
+    usuarios {
+        int id PK
+        varchar(50) nombre
+        varchar(50) apellido
+        varchar(100) email UK
+        varchar(255) password
+        enum rol
+        varchar(15) telefono
+        datetime fecha_registro
+        boolean activo
+    }
 
--- Reservas de cita
-CREATE TABLE reservas (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  cliente_id INT,
-  artista_id INT,
-  servicio_id INT,
-  fecha DATETIME,
-  observaciones TEXT,
-  FOREIGN KEY (cliente_id) REFERENCES usuarios(id),
-  FOREIGN KEY (artista_id) REFERENCES usuarios(id),
-  FOREIGN KEY (servicio_id) REFERENCES servicios(id)
-);
+    servicios {
+        int id PK
+        varchar(100) nombre
+        text descripcion
+        int duracion
+        decimal(8,2) precio
+        int artista_id FK
+        boolean activo
+    }
 
--- Facturas generadas
-CREATE TABLE facturas (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  reserva_id INT,
-  generado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (reserva_id) REFERENCES reservas(id)
-);
+    reservas {
+        int id PK
+        int cliente_id FK
+        int artista_id FK
+        int servicio_id FK
+        datetime fecha_hora
+        enum estado
+        text observaciones
+        datetime fecha_creacion
+    }
+
+    facturas {
+        int id PK
+        int reserva_id FK UK
+        decimal(10,2) total
+        datetime fecha_emision
+        enum metodo_pago
+        boolean pagada
+    }
+```
+
+### Descripción de Tablas
+
+- **usuarios**: Almacena información de todos los usuarios del sistema con sus roles
+- **servicios**: Catálogo de servicios disponibles para reservar
+- **reservas**: Registro detallado de cada cita programada
+- **facturas**: Información financiera de las reservas completadas
+
+### Importar Esquema
+
+```bash
+mysql -u usuario -p nombre_base_datos < schema.sql
 ```
 
 ## Uso

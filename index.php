@@ -1,4 +1,6 @@
 <?php
+
+
 $page_title = 'setTattoo($INK) - Inicio';
 $active_page = 'home';
 $base_path = '';
