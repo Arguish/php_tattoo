@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Lacquer&family=Permanent+Marker&family=Rubik+Glitch&family=Special+Elite&family=Splash&display=swap");
+
+:root {
+  --color-black: #000000;
+  --color-broken-black: #221515;
+  --color-white: #ffffff;
+  --color-red: #d9121f;
+  --color-gold: #d4af37;
+  --color-dark-green: #1a3a3a;
+  --color-dark-blue: #1a2a3a;
+}
+
+body {
+  font-family: "Special Elite", cursive, "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
+  line-height: 1.6;
+  color: var(--color-white);
+  background-color: var(--color-black);
+}
+
+.hero-section {
+  background: linear-gradient(rgba(20, 0, 0, 1), rgba(88, 57, 9, 0.2)),
+    url("../img/tattoo-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  padding: 100px 0;
+  margin-bottom: 30px;
+  background-color: var(--color-broken-black);
+}
+
+.hero-section h1 {
+  font-family: "Permanent Marker", cursive;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero-section p {
+  font-family: "Special Elite", cursive;
+}
+
+.card {
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(1, 1, 1, 0.5);
+  background-color: var(--color-broken-black);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+}
+
+.card-title {
+  color: var(--color-red);
+  font-family: "Lacquer", cursive;
+}
+
+.card-text {
+  color: var(--color-white);
+  font-family: "Special Elite", cursive;
+}
+
+/* Botones */
+.btn-primary {
+  background-color: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background-color: #aa0e19;
+  border-color: #aa0e19;
+  color: var(--color-white);
+}
+
+.btn-secondary {
+  background-color: var(--color-dark-blue);
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-black);
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--color-broken-black);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(212, 55, 55, 0.5);
+}
+
+.form-label {
+  color: var(--color-white);
+}
+
+.form-control {
+  background-color: var(--color-broken-black);
+  border: 1px solid var(--color-white);
+  color: var(--color-white);
+}
+
+.form-control:focus {
+  background-color: #333;
+  color: var(--color-white);
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+}
+
+.form-check-label {
+  color: var(--color-white);
+}
+
+footer {
+  margin-top: 50px;
+  border-top: 1px solid var(--color-gold);
+  font-family: "Special Elite", cursive;
+}
+
+.special-effect {
+  font-family: "Rubik Glitch", cursive;
+  color: var(--color-red);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+a {
+  color: var(--color-red);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #aa0e19;
+  text-decoration: underline;
+}
+
+.navbar-dark {
+  background-color: var(--color-broken-black) !important;
+  border-bottom: 2px solid var(--color-gold);
+}
+
+.navbar-brand {
+  color: var(--color-red) !important;
+  font-weight: bold;
+  font-family: "Splash", cursive;
+  font-size: 1.8rem;
+}
+
+.nav-link {
+  color: var(--color-white) !important;
+  font-family: "Lacquer", cursive;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-red) !important;
+}
