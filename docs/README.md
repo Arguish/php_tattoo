@@ -85,7 +85,6 @@ erDiagram
     usuarios {
         int id PK
         varchar(50) nombre
-        varchar(50) apellido
         varchar(100) email UK
         varchar(255) password
         enum rol
@@ -127,7 +126,7 @@ erDiagram
 
 ### Descripción de Tablas
 
-- **usuarios**: Almacena información de todos los usuarios del sistema con sus roles
+- **usuarios**: Almacena información de usuarios (nombre único, credenciales y roles)
 - **servicios**: Catálogo de servicios disponibles para reservar
 - **reservas**: Registro detallado de cada cita programada
 - **facturas**: Información financiera de las reservas completadas

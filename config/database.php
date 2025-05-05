@@ -5,7 +5,6 @@ $dotenv->load();
 
 
 
-// Intentar acceder a la base de datos
 
 try {
     $dsn = 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'];
@@ -26,7 +25,6 @@ try {
     }
 }
 
-// Si el error es porque la base de datos no existe, crearla
 if($pdo->getAttribute(PDO::ATTR_ERRMODE) == PDO::ERRMODE_EXCEPTION) {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
     $pdo->exec('CREATE DATABASE '. $_ENV['DB_NAME']);  

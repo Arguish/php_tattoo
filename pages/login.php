@@ -4,6 +4,7 @@ $page_title = 'Iniciar Sesión - setTattoo($INK)';
 $active_page = 'login';
 $base_path = '../';
 
+require_once '../utils/messages.php';
 
 include_once '../componentes/header.php';
 ?>
@@ -14,7 +15,10 @@ include_once '../componentes/header.php';
                 <div class="col-md-6">
                     <div class="form-container">
                         <h2 class="text-center mb-4">Iniciar Sesión</h2>
-                        <form action="../includes/login_process.php" method="post">
+                        
+                        <?php echo mostrarMensajes(); ?>
+                        
+                        <form action="../includes/login_process.php" method="post" id="loginForm">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo Electrónico</label>
                                 <input type="email" class="form-control" id="email" name="email" required>

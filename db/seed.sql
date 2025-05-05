@@ -1,4 +1,4 @@
--- Active: 1745930839832@@127.0.0.1@3306@world
+-- Active: 1746372293750@@127.0.0.1@3366@tattoo_db
 -- Script para poblar la base de datos con datos de prueba
 USE tattoo_db;
 
@@ -12,19 +12,19 @@ TRUNCATE TABLE usuarios;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
 -- Insertar usuarios con diferentes roles
-INSERT INTO usuarios (nombre, apellido, email, password, rol, telefono) VALUES
-('Admin', 'Principal', 'admin@tattoo.com', SHA2('admin123', 256), 'admin', '555-0001'),
-('Maria', 'Gonzalez', 'maria.admin@tattoo.com', SHA2('maria123', 256), 'admin', '555-0002'),
-('Juan', 'Pérez', 'juan.artista@tattoo.com', SHA2('juan123', 256), 'artista', '555-1001'),
-('Ana', 'Martínez', 'ana.artista@tattoo.com', SHA2('ana123', 256), 'artista', '555-1002'),
-('Carlos', 'Rodríguez', 'carlos.artista@tattoo.com', SHA2('carlos123', 256), 'artista', '555-1003'),
-('Laura', 'Sánchez', 'laura.recep@tattoo.com', SHA2('laura123', 256), 'recepcionista', '555-2001'),
-('Pedro', 'Díaz', 'pedro.recep@tattoo.com', SHA2('pedro123', 256), 'recepcionista', '555-2002'),
-('Sofia', 'López', 'sofia.cliente@email.com', SHA2('sofia123', 256), 'cliente', '555-3001'),
-('Miguel', 'Torres', 'miguel.cliente@email.com', SHA2('miguel123', 256), 'cliente', '555-3002'),
-('Elena', 'Ruiz', 'elena.cliente@email.com', SHA2('elena123', 256), 'cliente', '555-3003'),
-('Diego', 'Morales', 'diego.cliente@email.com', SHA2('diego123', 256), 'cliente', '555-3004'),
-('Carmen', 'Jiménez', 'carmen.cliente@email.com', SHA2('carmen123', 256), 'cliente', '555-3005');
+INSERT INTO usuarios (nombre, email, password, rol, telefono) VALUES
+('Admin Principal', 'admin@tattoo.com', SHA2('admin123', 256), 'admin', '555-0001'),
+('Maria Gonzalez', 'maria.admin@tattoo.com', SHA2('maria123', 256), 'admin', '555-0002'),
+('Juan Pérez', 'juan.artista@tattoo.com', SHA2('juan123', 256), 'artista', '555-1001'),
+('Ana Martínez', 'ana.artista@tattoo.com', SHA2('ana123', 256), 'artista', '555-1002'),
+('Carlos Rodríguez', 'carlos.artista@tattoo.com', SHA2('carlos123', 256), 'artista', '555-1003'),
+('Laura Sánchez', 'laura.recep@tattoo.com', SHA2('laura123', 256), 'recepcionista', '555-2001'),
+('Pedro Díaz', 'pedro.recep@tattoo.com', SHA2('pedro123', 256), 'recepcionista', '555-2002'),
+('Sofia López', 'sofia.cliente@email.com', SHA2('sofia123', 256), 'cliente', '555-3001'),
+('Miguel Torres', 'miguel.cliente@email.com', SHA2('miguel123', 256), 'cliente', '555-3002'),
+('Elena Ruiz', 'elena.cliente@email.com', SHA2('elena123', 256), 'cliente', '555-3003'),
+('Diego Morales', 'diego.cliente@email.com', SHA2('diego123', 256), 'cliente', '555-3004'),
+('Carmen Jiménez', 'carmen.cliente@email.com', SHA2('carmen123', 256), 'cliente', '555-3005');
 
 -- Insertar servicios variados
 INSERT INTO servicios (nombre, descripcion, duracion, precio, artista_id) VALUES

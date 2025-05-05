@@ -9,7 +9,6 @@ USE tattoo_db;
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
-    apellido VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     rol ENUM('admin', 'artista', 'cliente', 'recepcionista') NOT NULL,
@@ -24,7 +23,7 @@ CREATE TABLE servicios (
     descripcion TEXT,
     duracion INT NOT NULL COMMENT 'Duración en minutos',
     precio DECIMAL(8,2) NOT NULL,
-    artista_id INT,
+    artista_id INT NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (artista_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
