@@ -230,4 +230,32 @@ function buscarUsuarios($termino) {
         return false;
     }
 }
+function actualizarPasswordUsuario($id, $new_password) {
+    try {
+        $pdo = getConnection();
+        if (!$pdo) return false;
+
+        // Verificar si el usuario existe
+        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE id = ?");
+        $stmt->execute([$id]);
+        $usuario = $stmt->fetch();
+        if (!$usuario) {
+            return false;
+        }
+
+        // Hashear la nueva contraseña
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        if (!$hashed_password || strlen($hashed_password) < 20) {
+            return false;
+        }
+
+        // Actualizar la contraseña
+        $stmt = $pdo->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
+        $stmt->execute([$hashed_password, $id]);
+        return $stmt->rowCount() > 0;
+    } catch (PDOException $e) {
+        error_log('Error al actualizar la contraseña del usuario: ' . $e->getMessage());
+        return false;
+    }
+}
 ?>
