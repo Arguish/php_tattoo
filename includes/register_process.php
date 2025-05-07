@@ -69,4 +69,4 @@ if (!$usuario) {
 logInfo('Usuario registrado correctamente: ' . $email);
 iniciarSesion($usuario);
 
-redireccionarConMensaje('../index.php', '¡Cuenta creada correctamente! Bienvenido/a.', 'success');
+redireccionarConMensaje('../index.php', '¡Cuenta creada correctamente! Hola!/a.', 'success');

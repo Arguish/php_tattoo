@@ -42,13 +42,16 @@ iniciarSesion($usuario, $recordar);
 
 switch ($usuario['rol']) {
     case 'admin':
-        header('Location: ../admin/dashboard.php');
+        header('Location: ../pages/admin/index.php');
         break;
     case 'artista':
-        header('Location: ../artista/dashboard.php');
+        header('Location: ../pages/artista/index.php');
+        break;
+    case 'recepcionista':
+        header('Location: ../pages/recepcionista/index.php');
         break;
     default:
-        header('Location: ../index.php');
+        header('Location: ../pages/index.php');
         break;
 }
 exit;

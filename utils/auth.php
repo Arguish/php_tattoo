@@ -4,7 +4,7 @@
  * Proporciona funciones para login, registro y validación de usuarios
  */
 
-require_once '../services/usuarios.php';
+require_once __DIR__ . '/../services/usuarios.php';
 
 /**
  * Valida las credenciales de un usuario
@@ -265,4 +265,22 @@ function validarDatosRegistro($datos) {
     }
     
     return $errores;
+}
+
+// metodo para comprobar si el usuario esta logueado
+function estaLogueado() {
+    //comprobar si existe una cookie con el nombre auth_token
+    if (isset($_COOKIE['auth_token'])) {
+        //si existe, comprobar si existe una sesion con el nombre auth_token
+        if (isset($_SESSION['auth_token'])) {
+            //si existe, comprobar si el valor de la cookie es igual al valor de la sesion
+            if ($_COOKIE['auth_token'] === $_SESSION['auth_token']) {
+                return true;
+            }
+        }
+    }
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }  
+    return isset($_SESSION['autenticado']) && $_SESSION['autenticado'] === true;
 }

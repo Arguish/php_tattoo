@@ -1,5 +1,9 @@
 <?php
+// importar esaLogueado de auth.php
+require_once __DIR__ . '/../utils/auth.php';
 
+// Verificar si el usuario está autenticado
+$usuario_autenticado = estaLogueado();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -25,12 +29,21 @@
                     <li class="nav-item">
                         <a class="nav-link <?php echo $active_page === 'about' ? 'active' : ''; ?>" <?php echo $active_page === 'about' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/about.php">Nosotros</a>
                     </li>
+                    <?php if ($usuario_autenticado): ?>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" <?php echo $active_page === 'dashboard' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/<?php echo strtolower($_SESSION['usuario_rol']); ?>/index.php">Mi cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $base_path; ?>includes/logout.php">Cerrar Sesión</a>
+                    </li>
+                    <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link <?php echo $active_page === 'login' ? 'active' : ''; ?>" <?php echo $active_page === 'login' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/login.php">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo $active_page === 'register' ? 'active' : ''; ?>" <?php echo $active_page === 'register' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/register.php">Registrarse</a>
                     </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
