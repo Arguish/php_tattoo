@@ -12,10 +12,10 @@ if (!function_exists('getenv') || !getenv('DB_HOST')) {
 }
 
 
-define('LOG_ERROR', 'ERROR');
-define('LOG_WARNING', 'WARNING');
-define('LOG_INFO', 'INFO');
-define('LOG_DEBUG', 'DEBUG');
+if (!defined('LOG_ERROR')) define('LOG_ERROR', 'ERROR');
+if (!defined('LOG_WARNING')) define('LOG_WARNING', 'WARNING');
+if (!defined('LOG_INFO')) define('LOG_INFO', 'INFO');
+if (!defined('LOG_DEBUG')) define('LOG_DEBUG', 'DEBUG');
 
 /**
  * Registra un mensaje en el log del sistema
@@ -66,30 +66,7 @@ if ($logHandle) {
     
     
     if ($dev_mode) {
-        
-        if (php_sapi_name() === 'cli' || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest')) {
-            
-            echo $mensaje_formateado . "\n";
-        } else {
-            
-            $color = 'black';
-            switch ($nivel) {
-                case LOG_ERROR:
-                    $color = 'red';
-                    break;
-                case LOG_WARNING:
-                    $color = 'orange';
-                    break;
-                case LOG_INFO:
-                    $color = 'blue';
-                    break;
-                case LOG_DEBUG:
-                    $color = 'gray';
-                    break;
-            }
-            
-            echo "<pre style='color: $color; margin: 0; padding: 5px; font-family: monospace;'>$mensaje_formateado</pre>";
-        }
+        // No imprimir mensajes en la web ni en CLI, solo registrar en archivo
     }
 }
 
@@ -127,3 +104,8 @@ function logInfo($mensaje, $contexto = []) {
 function logDebug($mensaje, $contexto = []) {
     logMessage($mensaje, LOG_DEBUG, $contexto);
 }
+
+// Configuración para evitar mostrar errores y logs en la salida HTML
+error_reporting(E_ALL);
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
