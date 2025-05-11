@@ -27,16 +27,16 @@ INSERT INTO usuarios (nombre, email, password, rol, telefono) VALUES
 ('Carmen Jiménez', 'carmen.cliente@email.com', SHA2('carmen123', 256), 'cliente', '555-3005');
 
 -- Insertar servicios variados
-INSERT INTO servicios (nombre, descripcion, duracion, precio, artista_id) VALUES
-('Tatuaje Pequeño', 'Diseños simples de hasta 5cm', 60, 80.00, 3),
-('Tatuaje Mediano', 'Diseños detallados de 5-15cm', 120, 160.00, 3),
-('Tatuaje Grande', 'Diseños complejos de 15-30cm', 240, 300.00, 4),
-('Tatuaje Personalizado', 'Diseño único según especificaciones del cliente', 180, 250.00, 4),
-('Cover-Up Pequeño', 'Cubrir tatuajes pequeños existentes', 90, 120.00, 5),
-('Cover-Up Grande', 'Cubrir tatuajes grandes existentes', 300, 400.00, 5),
-('Diseño Tradicional', 'Estilo old school americano', 150, 200.00, 3),
-('Diseño Realista', 'Tatuajes de estilo fotorrealista', 210, 280.00, 4),
-('Diseño Minimalista', 'Líneas finas y diseños simples', 90, 100.00, 5);
+INSERT INTO servicios (nombre, descripcion, duracion, precio) VALUES
+('Tatuaje Pequeño', 'Diseños simples de hasta 5cm', 60, 80.00),
+('Tatuaje Mediano', 'Diseños detallados de 5-15cm', 120, 160.00),
+('Tatuaje Grande', 'Diseños complejos de 15-30cm', 240, 300.00),
+('Tatuaje Personalizado', 'Diseño único según especificaciones del cliente', 180, 250.00),
+('Cover-Up Pequeño', 'Cubrir tatuajes pequeños existentes', 90, 120.00),
+('Cover-Up Grande', 'Cubrir tatuajes grandes existentes', 300, 400.00),
+('Diseño Tradicional', 'Estilo old school americano', 150, 200.00),
+('Diseño Realista', 'Tatuajes de estilo fotorrealista', 210, 280.00),
+('Diseño Minimalista', 'Líneas finas y diseños simples', 90, 100.00);
 
 -- Insertar reservas con diferentes estados
 INSERT INTO reservas (cliente_id, artista_id, servicio_id, fecha_hora, estado, observaciones) VALUES

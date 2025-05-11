@@ -16,7 +16,7 @@ try {
     $dsn ='mysql:host='. $_ENV['DB_HOST'];
     $pdo = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS']);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-    $sql = file_get_contents(__DIR__. '/../db/schema.sql');
+    $sql = file_get_contents(__DIR__. '/db/schema.sql');
     $pdo->exec($sql);
     
     header('Location:../index.php');
