@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])&& isset(
                     $reservasPendientes = obtenerReservas('pendiente', $_SESSION['usuario_id']);
                     $reservasConfirmadas = obtenerReservas('confirmada', $_SESSION['usuario_id']);
                     if (count($reservasPendientes) + count($reservasConfirmadas) >= 1) {
+                        logWarning('Ya tienes una reserva pendiente o confirmada');
                         throw new Exception('Ya tienes alguna reserva pendiente o confirmada');
                     }
                 }

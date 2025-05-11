@@ -12,7 +12,24 @@ include_once 'componentes/header.php';
         <div class="container">
             <h1 class="display-4">setTattoo($INK)</h1>
             <p class="lead">Arte y profesionalismo en cada diseño</p>
-            <a href="pages/register.php" class="btn btn-primary btn-lg mt-3">Reserva tu cita</a>
+            <?php
+            // Verificar si el usuario está autenticado
+            if (!$usuario_autenticado) {
+                // Si no hay usuario logueado, mostrar botón de registro
+                echo '<a href="pages/register.php" class="btn btn-primary btn-lg mt-3">Regístrate</a>';
+            } else {
+                // Obtener el rol del usuario
+                $rol_usuario = $_SESSION['usuario_rol'] ?? '';
+                
+                // Si es cliente, mostrar botón de mis reservas
+                if ($rol_usuario === 'cliente') {
+                    echo '<a href="pages/dashboard/misReservas.php" class="btn btn-primary btn-lg mt-3">Mis Reservas</a>';
+                } else {
+                    // Para cualquier otro rol, mostrar botón de mi perfil
+                    echo '<a href="pages/dashboard/index.php" class="btn btn-primary btn-lg mt-3">Mi Perfil</a>';
+                }
+            }
+            ?>
         </div>
     </header>
 

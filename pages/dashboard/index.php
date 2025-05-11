@@ -87,6 +87,18 @@ echo '<style>
             </div>
         </div>
         <?php endif; ?>
+        <?php if (in_array($_SESSION['usuario_rol'], ['artista','cliente'])): ?>
+        <!-- Sección de Gestión de Citas -->
+        <div class="dashboard-card mb-3 me-3">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Mis Citas</h5>
+                    <p class="card-text">Administra tus citas con el estudio.</p>
+                    <a href="misReservas.php" class="btn btn-primary">Ir a Citas</a>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
         
         <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'artista','recepcionista'])): ?>
         <!-- Sección de Gestión de Servicios -->
