@@ -7,7 +7,6 @@ require_once '../../utils/auth.php';
 
 
 include_once '../../componentes/header.php';
-var_dump($_SESSION); // Comentado para producción
 
 $user_role = $_SESSION['usuario_rol'];
 
@@ -74,7 +73,7 @@ echo '<style>
                 <div class="card-body">
                     <h5 class="card-title">Gestión de Citas</h5>
                     <p class="card-text">Administra todas las citas del estudio.</p>
-                    <a href="config.php?type=appointment" class="btn btn-primary">Ir a Citas</a>
+                    <a href="" class="btn btn-primary">Ir a Citas</a>
                 </div>
             </div>
         </div>
@@ -87,7 +86,7 @@ echo '<style>
                 <div class="card-body">
                     <h5 class="card-title">Gestión de Servicios</h5>
                     <p class="card-text">Administra los servicios ofrecidos.</p>
-                    <a href="config.php?type=tattoo" class="btn btn-primary">Ir a Servicios</a>
+                    <a href="" class="btn btn-primary">Ir a Servicios</a>
                 </div>
             </div>
         </div>
@@ -95,12 +94,12 @@ echo '<style>
         
         <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
         <!-- Sección de Gestión de Clientes -->
-        <div class="dashboard-card mb-3 me-3">
+        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Gestión de Clientes</h5>
                     <p class="card-text">Administra la información de los clientes.</p>
-                    <a href="config.php?type=user&filter=client" class="btn btn-primary">Ir a Clientes</a>
+                    <a href="" class="btn btn-secondary"style="cursor: not-allowed ;">Ir a Clientes</a>
                 </div>
             </div>
         </div>
@@ -108,12 +107,12 @@ echo '<style>
         
         <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'artista'])): ?>
         <!-- Sección de Gestión de Artistas -->
-        <div class="dashboard-card mb-3 me-3">
+        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Portafolio de Artistas</h5>
                     <p class="card-text">Administra el portafolio de todos los artistas.</p>
-                    <a href="config.php?type=tattoo&filter=portfolio" class="btn btn-primary">Ir al Portafolio</a>
+                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir al Portafolio</a>
                 </div>
             </div>
         </div>
@@ -134,12 +133,12 @@ echo '<style>
         
         <?php if (in_array($_SESSION['usuario_rol'], ['admin'])): ?>
         <!-- Sección de Reportes -->
-        <div class="dashboard-card mb-3 me-3">
+        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Reportes</h5>
                     <p class="card-text">Visualiza reportes y estadísticas.</p>
-                    <a href="config.php?type=report" class="btn btn-primary">Ver Reportes</a>
+                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ver Reportes</a>
                 </div>
             </div>
         </div>
@@ -147,12 +146,12 @@ echo '<style>
         
         <?php if (in_array($_SESSION['usuario_rol'], ['admin'])): ?>
         <!-- Sección de Configuración -->
-        <div class="dashboard-card mb-3 me-3">
+        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Configuración</h5>
                     <p class="card-text">Configura parámetros del sistema.</p>
-                    <a href="config.php?type=setting" class="btn btn-primary">Ir a Configuración</a>
+                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir a Configuración</a>
                 </div>
             </div>
         </div>
