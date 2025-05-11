@@ -1,29 +1,129 @@
 <?php
-/**
- * Servicio CRUD para la tabla reservas
- * Proporciona funciones para crear, leer, actualizar y eliminar reservas
- */
+
 
 require_once 'db_connection.php';
+require_once __DIR__ . '/../utils/auth.php';
+require_once __DIR__. '/../utils/logger.php';
 
-/**
- * Obtiene todas las reservas
- * @param string $estado Filtrar por estado (opcional)
- * @param int $clienteId Filtrar por cliente (opcional)
- * @param int $artistaId Filtrar por artista (opcional)
- * @param string $fechaDesde Filtrar desde fecha (opcional, formato Y-m-d)
- * @param string $fechaHasta Filtrar hasta fecha (opcional, formato Y-m-d)
- * @return array|false Array de reservas o false en caso de error
- */
+logDebug('Intentando procesar acción con request: '. json_encode($_REQUEST));
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])&& isset($_REQUEST['target']) && $_REQUEST['target']=='reservas') {
+    header('Content-Type: application/json');
+    
+    logDebug('Intentando procesar acción en reservas: '. $_REQUEST['action']);
+    try {
+
+
+        switch ($_REQUEST['action']) {
+            case 'create':
+                if (!checkRole(['admin', 'recepcionista','cliente'])) {
+                    throw new Exception('Acceso denegado: se requieren privilegios de administrador o artista');
+                }
+                if (checkRole(['cliente'])) {
+                    $reservasPendientes = obtenerReservas('pendiente', $_SESSION['usuario_id']);
+                    $reservasConfirmadas = obtenerReservas('confirmada', $_SESSION['usuario_id']);
+                    if (count($reservasPendientes) + count($reservasConfirmadas) >= 1) {
+                        throw new Exception('Ya tienes alguna reserva pendiente o confirmada');
+                    }
+                }
+                logDebug('Intentando crear reserva con datos: '. json_encode($_REQUEST));
+                $success = crearReserva($_REQUEST);
+                echo json_encode(['success' => $success]);
+                exit;
+
+            case 'update':
+                logDebug('Intentando actualizar reserva con ID: '. json_encode($_REQUEST));
+                
+                // Verify permissions: Admin OR artista assigned to the reservation
+                $reserva = null;
+                if (!empty($_REQUEST['id'])) {
+                    $reserva = obtenerReservaPorId($_REQUEST['id']);
+                }
+                
+                if (!checkRole(['admin','recepcionista']) && (!$reserva || $reserva['artista_id'] != $_SESSION['usuario_id'])) {
+                    logError('Acceso denegado: se requieren mayores privilegios');
+                    throw new Exception('Acceso denegado: se requieren mayores privilegios');
+                }
+                
+                if (empty($_REQUEST['id'])) {
+                    logError('ID de reserva requerido');
+                    throw new Exception('ID de reserva requerido');
+                }
+                logDebug('Intentando actualizar reserva con ID: '. $_REQUEST['id']);
+                
+                $success = actualizarReserva($_REQUEST['id'], $_REQUEST);
+                echo json_encode(['success' => $success]);
+                exit;
+
+            case 'read':
+                logDebug('Intentando obtener reserva con ID: '. ($_REQUEST['id'] ?? 'todas'));
+                $id = $_REQUEST['id'] ?? null;
+                if ($id) {
+                    $reserva = obtenerReservaPorId($id);
+                    logDebug('Reserva obtenida: '. json_encode($reserva));
+                    echo json_encode($reserva ?: ['error' => 'Reserva no encontrada']);
+                } else {
+                    // Filtros opcionales
+                    $estado = $_REQUEST['estado'] ?? null;
+                    $clienteId = $_REQUEST['cliente_id'] ?? null;
+                    $artistaId = $_REQUEST['artista_id'] ?? null;
+                    $fechaDesde = $_REQUEST['fecha_desde'] ?? null;
+                    $fechaHasta = $_REQUEST['fecha_hasta'] ?? null;
+                    
+                    $reservas = obtenerReservas($estado, $clienteId, $artistaId, $fechaDesde, $fechaHasta);
+                    logDebug('Reservas obtenidas: ' . count($reservas));
+                    echo json_encode($reservas ?: ['error' => 'Error al obtener reservas']);
+                }
+                exit;
+
+            case 'delete':
+                if (!checkRole(['admin','recepcionista'])) {
+                    throw new Exception('Acceso denegado: se requieren privilegios de administrador');
+                }
+                logDebug('Intentando eliminar reserva con ID: '. $_REQUEST['id']);
+                if (empty($_REQUEST['id'])) {
+                    throw new Exception('ID de reserva requerido');
+                }
+                if (!eliminarReserva($_REQUEST['id'])) {
+                    throw new Exception('Error al eliminar la reserva');
+                }
+                echo json_encode(['success' => true]);
+                exit;
+                
+            case 'cambiar_estado':
+                logDebug('Intentando cambiar estado de reserva con ID: '. $_REQUEST['id']);
+                if (empty($_REQUEST['id']) || empty($_REQUEST['estado'])) {
+                    throw new Exception('ID de reserva y estado requeridos');
+                }
+                
+                // Verificar permisos: Admin o artista asignado a la reserva
+                $reserva = obtenerReservaPorId($_REQUEST['id']);
+                if (!checkRole(['admin']) && (!$reserva || $reserva['artista_id'] != $_SESSION['usuario_id'])) {
+                    throw new Exception('Acceso denegado: se requieren mayores privilegios');
+                }
+                
+                $success = cambiarEstadoReserva($_REQUEST['id'], $_REQUEST['estado']);
+                echo json_encode(['success' => $success]);
+                exit;
+
+            default:
+                throw new Exception('Acción no válida');
+        }
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+        exit;
+    }
+}
+
 function obtenerReservas($estado = null, $clienteId = null, $artistaId = null, $fechaDesde = null, $fechaHasta = null) {
+    logdebug('Obteniendo reservas' . ($estado? " con estado: $estado" : '') . ($clienteId? " con cliente ID: $clienteId" : ''). ($artistaId? " con artista ID: $artistaId" : ''). ($fechaDesde? " desde $fechaDesde" : ''). ($fechaHasta? " hasta $fechaHasta" : ''));
     try {
         $pdo = getConnection();
         if (!$pdo) return false;
         
         $sql = "SELECT r.*, 
-                c.nombre as cliente_nombre, c.apellido as cliente_apellido,
-                a.nombre as artista_nombre, a.apellido as artista_apellido,
-                s.nombre as servicio_nombre, s.precio as servicio_precio
+                c.nombre as cliente_nombre, a.nombre as artista_nombre, s.nombre as servicio_nombre, s.precio as servicio_precio
                FROM reservas r 
                JOIN usuarios c ON r.cliente_id = c.id
                JOIN usuarios a ON r.artista_id = a.id
@@ -65,6 +165,8 @@ function obtenerReservas($estado = null, $clienteId = null, $artistaId = null, $
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
+        logDebug('SQL obtenido: '. $sql);
+        logDebug('Parámetros obtencion: '. json_encode($params));
         return $stmt->fetchAll();
     } catch (PDOException $e) {
         error_log('Error al obtener reservas: ' . $e->getMessage());
@@ -83,8 +185,8 @@ function obtenerReservaPorId($id) {
         if (!$pdo) return false;
         
         $stmt = $pdo->prepare("SELECT r.*, 
-                              c.nombre as cliente_nombre, c.apellido as cliente_apellido,
-                              a.nombre as artista_nombre, a.apellido as artista_apellido,
+                              c.nombre as cliente_nombre, 
+                              a.nombre as artista_nombre, 
                               s.nombre as servicio_nombre, s.precio as servicio_precio
                               FROM reservas r 
                               JOIN usuarios c ON r.cliente_id = c.id
@@ -191,6 +293,8 @@ function actualizarReserva($id, $datos) {
         
         $sql = "UPDATE reservas SET " . implode(", ", $campos) . " WHERE id = ?";
         $valores[] = $id;
+        logDebug('SQL: '. $sql);
+        logDebug('Parámetros: '. json_encode($valores)); 
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute($valores);

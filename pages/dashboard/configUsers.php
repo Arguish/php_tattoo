@@ -131,8 +131,9 @@ $usuarios = obtenerUsuarios();
 function openEditModal(userId) {
     console.log(userId);
 
-    fetch(`../../services/usuarios.php?action=read&id=${userId}`,{
+    fetch(`../../services/usuarios.php?target=users&action=read&id=${userId}`,{
       method: 'POST',
+      target: 'users',
     })
         .then(response => response.json())
         .then(data => {
@@ -153,7 +154,7 @@ function submitForm(event) {
     const formData = new FormData(event.target);
     const userId = formData.get('id');
     
-    fetch(`../../services/usuarios.php?action=update&id=${userId}`, {
+    fetch(`../../services/usuarios.php?target=users&action=update&id=${userId}`, {
         method: 'POST',
         body: formData
     })
@@ -174,7 +175,7 @@ function nuevoUsuario(event) {
 
   const formData = new FormData(document.getElementById('createForm'));
 
-  fetch(`../../services/usuarios.php?action=create`, {
+  fetch(`../../services/usuarios.php?target=users&action=create`, {
         method: 'POST',
         body: formData
     })
@@ -190,8 +191,9 @@ function nuevoUsuario(event) {
 
 function confirmDelete(userId) {
     if(confirm('¿Estás seguro de eliminar este usuario?')) {
-      fetch(`../../services/usuarios.php?action=delete&id=${userId}`, {
-        method: 'POST'
+      fetch(`../../services/usuarios.php?target=users&action=delete&id=${userId}`, {
+        method: 'POST',
+        target: 'users'
     })
         .then(response => {
             if(response.ok) {

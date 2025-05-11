@@ -53,6 +53,15 @@ echo '<style>
 
     <!-- Contenedor flexible para módulos del dashboard -->
     <div class="d-flex flex-wrap justify-content-center mt-4">
+    <div class="dashboard-card mb-3 me-3">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Mis Datos</h5>
+                    <p class="card-text">Administra tus datos.</p>
+                    <a href="me.php" class="btn btn-primary">Configurar</a>
+                </div>
+            </div>
+        </div>
         <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
         <!-- Sección de Gestión de Usuarios -->
         <div class="dashboard-card mb-3 me-3">
@@ -73,7 +82,7 @@ echo '<style>
                 <div class="card-body">
                     <h5 class="card-title">Gestión de Citas</h5>
                     <p class="card-text">Administra todas las citas del estudio.</p>
-                    <a href="" class="btn btn-primary">Ir a Citas</a>
+                    <a href="configReservas.php" class="btn btn-primary">Ir a Citas</a>
                 </div>
             </div>
         </div>

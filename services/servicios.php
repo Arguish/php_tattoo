@@ -17,9 +17,8 @@ function obtenerServicios($soloActivos = false, $artistaId = null) {
         $pdo = getConnection();
         if (!$pdo) return false;
         
-        $sql = "SELECT s.*, u.nombre as artista_nombre, u.apellido as artista_apellido 
-               FROM servicios s 
-               LEFT JOIN usuarios u ON s.artista_id = u.id";
+        $sql = "SELECT s.*
+               FROM servicios s ";
         $params = [];
         $where = [];
         
@@ -27,10 +26,7 @@ function obtenerServicios($soloActivos = false, $artistaId = null) {
             $where[] = "s.activo = TRUE";
         }
         
-        if ($artistaId) {
-            $where[] = "s.artista_id = ?";
-            $params[] = $artistaId;
-        }
+
         
         if (!empty($where)) {
             $sql .= " WHERE " . implode(" AND ", $where);

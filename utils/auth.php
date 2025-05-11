@@ -255,7 +255,7 @@ function checkRole($rolesPermitidos) {
         session_start();
     } 
     $rolUsuario = $_SESSION['usuario_rol'] ?? null;
-    logDebug('Rol del usuario: '. print_r($_SESSION));
+    logDebug('Rol del usuario: '. $rolUsuario);
     if (session_status() !== PHP_SESSION_ACTIVE) {
         return false;
     }

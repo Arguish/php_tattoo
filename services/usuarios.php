@@ -5,11 +5,11 @@ require_once __DIR__ . '/../utils/auth.php';
 require_once __DIR__. '/../utils/logger.php';
 
 // Manejar acciones
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])&& isset($_REQUEST['target']) && $_REQUEST['target']=='users') {
     header('Content-Type: application/json');
     
     try {
-        logDebug('Intentando procesar acción: '. $_REQUEST['action']);
+        logDebug('Intentando procesar acción en usuarios: '. $_REQUEST['action']);
 
 
         switch ($_REQUEST['action']) {
@@ -23,12 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])) {
                 exit;
 
             case 'update':
-                if (!checkRole(['admin'])) {
-                    throw new Exception('Acceso denegado: se requieren privilegios de administrador');
+                logDebug('Intentando actualizar usuario con ID: '. json_encode($_REQUEST));
+                
+                // Verify permissions: Admin OR owner of the account
+                if (!checkRole(['admin']) && $_REQUEST['id'] != $_SESSION['usuario_id']) {
+                    throw new Exception('Acceso denegado: se requieren mayores privilegios');
                 }
+                
                 if (empty($_REQUEST['id'])) {
                     throw new Exception('ID de usuario requerido');
                 }
+                
+                // If not admin, remove role from data to prevent privilege escalation
+                if (!checkRole(['admin'])) {
+                    unset($_REQUEST['rol']);
+                    logDebug('Actualización de usuario no admin - eliminado campo rol');
+                }
+                
                 $success = actualizarUsuario($_REQUEST['id'], $_REQUEST);
                 echo json_encode(['success' => $success]);
                 exit;
