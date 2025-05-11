@@ -53,7 +53,7 @@ echo '<style>
 
     <!-- Contenedor flexible para módulos del dashboard -->
     <div class="d-flex flex-wrap justify-content-center mt-4">
-    <div class="dashboard-card mb-3 me-3">
+        <div class="dashboard-card mb-3 me-3">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">Mis Datos</h5>
@@ -62,120 +62,120 @@ echo '<style>
                 </div>
             </div>
         </div>
-        <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
-        <!-- Sección de Gestión de Usuarios -->
-        <div class="dashboard-card mb-3 me-3">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Gestión de Usuarios</h5>
-                    <p class="card-text">Administra los usuarios del sistema.</p>
-                    <a href="configUsers.php" class="btn btn-primary">Ir a Usuarios</a>
+        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'recepcionista'])): ?>
+            <!-- Sección de Gestión de Usuarios -->
+            <div class="dashboard-card mb-3 me-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Usuarios</h5>
+                        <p class="card-text">Administra los usuarios del sistema.</p>
+                        <a href="configUsers.php" class="btn btn-primary">Ir a Usuarios</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
-        <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
-        <!-- Sección de Gestión de Citas -->
-        <div class="dashboard-card mb-3 me-3">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Gestión de Citas</h5>
-                    <p class="card-text">Administra todas las citas del estudio.</p>
-                    <a href="configReservas.php" class="btn btn-primary">Ir a Citas</a>
+
+        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'recepcionista'])): ?>
+            <!-- Sección de Gestión de Citas -->
+            <div class="dashboard-card mb-3 me-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Citas</h5>
+                        <p class="card-text">Administra todas las citas del estudio.</p>
+                        <a href="configReservas.php" class="btn btn-primary">Ir a Citas</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        <?php if (in_array($_SESSION['usuario_rol'], ['artista','cliente'])): ?>
-        <!-- Sección de Gestión de Citas -->
-        <div class="dashboard-card mb-3 me-3">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Mis Citas</h5>
-                    <p class="card-text">Administra tus citas con el estudio.</p>
-                    <a href="misReservas.php" class="btn btn-primary">Ir a Citas</a>
+        <?php if (in_array($_SESSION['usuario_rol'], ['artista', 'cliente'])): ?>
+            <!-- Sección de Gestión de Citas -->
+            <div class="dashboard-card mb-3 me-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Mis Citas</h5>
+                        <p class="card-text">Administra tus citas con el estudio.</p>
+                        <a href="misReservas.php" class="btn btn-primary">Ir a Citas</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
-        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'artista','recepcionista'])): ?>
-        <!-- Sección de Gestión de Servicios -->
-        <div class="dashboard-card mb-3 me-3">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Gestión de Servicios</h5>
-                    <p class="card-text">Administra los servicios ofrecidos.</p>
-                    <a href="" class="btn btn-primary">Ir a Servicios</a>
+
+        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'artista', 'recepcionista'])): ?>
+            <!-- Sección de Gestión de Servicios -->
+            <div class="dashboard-card mb-3 me-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Servicios</h5>
+                        <p class="card-text">Administra los servicios ofrecidos.</p>
+                        <a href="" class="btn btn-primary">Ir a Servicios</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
-        <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
-        <!-- Sección de Gestión de Clientes -->
-        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Gestión de Clientes</h5>
-                    <p class="card-text">Administra la información de los clientes.</p>
-                    <a href="" class="btn btn-secondary"style="cursor: not-allowed ;">Ir a Clientes</a>
+
+        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'recepcionista'])): ?>
+            <!-- Sección de Gestión de Clientes -->
+            <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Clientes</h5>
+                        <p class="card-text">Administra la información de los clientes.</p>
+                        <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir a Clientes</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
+
         <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'artista'])): ?>
-        <!-- Sección de Gestión de Artistas -->
-        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Portafolio de Artistas</h5>
-                    <p class="card-text">Administra el portafolio de todos los artistas.</p>
-                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir al Portafolio</a>
+            <!-- Sección de Gestión de Artistas -->
+            <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Portafolio de Artistas</h5>
+                        <p class="card-text">Administra el portafolio de todos los artistas.</p>
+                        <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir al Portafolio</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
-        <?php if (in_array($_SESSION['usuario_rol'], ['admin','recepcionista'])): ?>
-        <!-- Sección de Facturación -->
-        <div class="dashboard-card mb-3 me-3">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Facturación</h5>
-                    <p class="card-text">Gestiona facturas y pagos del estudio.</p>
-                    <a href="config.php?type=invoice" class="btn btn-primary">Ir a Facturas</a>
+
+        <?php if (in_array($_SESSION['usuario_rol'], ['admin', 'recepcionista'])): ?>
+            <!-- Sección de Facturación -->
+            <div class="dashboard-card mb-3 me-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Facturación</h5>
+                        <p class="card-text">Gestiona facturas y pagos del estudio.</p>
+                        <a href="config.php?type=invoice" class="btn btn-primary">Ir a Facturas</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
+
         <?php if (in_array($_SESSION['usuario_rol'], ['admin'])): ?>
-        <!-- Sección de Reportes -->
-        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Reportes</h5>
-                    <p class="card-text">Visualiza reportes y estadísticas.</p>
-                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ver Reportes</a>
+            <!-- Sección de Reportes -->
+            <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Reportes</h5>
+                        <p class="card-text">Visualiza reportes y estadísticas.</p>
+                        <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ver Reportes</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
-        
+
         <?php if (in_array($_SESSION['usuario_rol'], ['admin'])): ?>
-        <!-- Sección de Configuración -->
-        <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Configuración</h5>
-                    <p class="card-text">Configura parámetros del sistema.</p>
-                    <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir a Configuración</a>
+            <!-- Sección de Configuración -->
+            <div class="dashboard-card mb-3 me-3" style="cursor: not-allowed ;">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Configuración</h5>
+                        <p class="card-text">Configura parámetros del sistema.</p>
+                        <a href="" class="btn btn-secondary" style="cursor: not-allowed ;">Ir a Configuración</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endif; ?>
     </div>
 </div>

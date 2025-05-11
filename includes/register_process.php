@@ -13,7 +13,7 @@ session_start();
 
 $nombre = isset($_POST['nombre']) ? sanitizeInput($_POST['nombre']) : '';
 $email = isset($_POST['email']) ? sanitizeInput($_POST['email']) : '';
-$password = isset($_POST['password']) ? $_POST['password'] : ''; 
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 $confirmPassword = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : '';
 $terms = isset($_POST['terms']) ? $_POST['terms'] : '';
 
@@ -29,7 +29,7 @@ $errores = validarDatosRegistro($datos);
 
 if (!empty($errores)) {
     $_SESSION['errores_registro'] = $errores;
-    $_SESSION['datos_registro'] = $datos; 
+    $_SESSION['datos_registro'] = $datos;
     header('Location: ../pages/register.php');
     exit;
 }
@@ -44,7 +44,7 @@ $datosUsuario = [
     'nombre' => $nombre,
     'email' => $email,
     'password' => $password,
-    'rol' => 'cliente', 
+    'rol' => 'cliente',
 ];
 
 logDebug('Intentando crear usuario con email: ' . $email);

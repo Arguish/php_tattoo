@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 session_start();
 
 $email = isset($_POST['email']) ? sanitizeInput($_POST['email']) : '';
-$password = isset($_POST['password']) ? $_POST['password'] : ''; 
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 $recordar = isset($_POST['remember']) && $_POST['remember'] === 'on';
 
 logDebug('Intento de inicio de sesión para: ' . $email);
@@ -31,7 +31,7 @@ logDebug('Validando credenciales para: ' . $email);
 $usuario = validarCredenciales($email, $password);
 
 if (!$usuario) {
-    logWarning('Credenciales inválidas para: ' . $email ."//". $password ."//". $usuario);
+    logWarning('Credenciales inválidas para: ' . $email . "//" . $password . "//" . $usuario);
     redireccionarConMensaje('../pages/login.php', 'Email o contraseña incorrectos', 'error');
 }
 
