@@ -1,17 +1,9 @@
 <?php
-/**
- * Archivo de conexión a la base de datos para los servicios CRUD
- * Este archivo será incluido en todos los servicios para establecer la conexión
- */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/../');
 $dotenv->load();
 
-/**
- * Función para obtener la conexión a la base de datos
- * @return PDO Objeto de conexión PDO
- */
 function getConnection() {
     if (!function_exists('logError')) {
         require_once __DIR__ . '/../utils/logger.php';
@@ -41,11 +33,6 @@ function getConnection() {
     }
 }
 
-/**
- * Función para sanitizar entradas de usuario
- * @param string $data Datos a sanitizar
- * @return string Datos sanitizados
- */
 function sanitizeInput($data) {
     $data = trim($data);
     $data = stripslashes($data);

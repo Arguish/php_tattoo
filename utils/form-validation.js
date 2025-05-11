@@ -1,7 +1,3 @@
-/**
- * Validaciones de formularios del lado del cliente
- */
-
 document.addEventListener("DOMContentLoaded", function () {
   const registerForm = document.getElementById("registerForm");
   if (registerForm) {
@@ -100,11 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-/**
- * Muestra un mensaje de error para un campo
- * @param {HTMLElement} input Campo de formulario
- * @param {string} message Mensaje de error
- */
 function showError(input, message) {
   input.classList.add("is-invalid");
 
@@ -118,10 +109,6 @@ function showError(input, message) {
   feedback.textContent = message;
 }
 
-/**
- * Elimina el mensaje de error de un campo
- * @param {HTMLElement} input Campo de formulario
- */
 function removeError(input) {
   input.classList.remove("is-invalid");
 
@@ -131,11 +118,6 @@ function removeError(input) {
   }
 }
 
-/**
- * Valida un email
- * @param {string} email Email a validar
- * @return {boolean} True si el email es válido
- */
 function isValidEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);

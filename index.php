@@ -10,7 +10,7 @@ include_once 'componentes/header.php';
 
     <header class="hero-section py-5 text-center text-white bg-dark">
         <div class="container">
-            <h1 class="display-4">Hola! a nuestro setTattoo($INK)</h1>
+            <h1 class="display-4">setTattoo($INK)</h1>
             <p class="lead">Arte y profesionalismo en cada diseño</p>
             <a href="pages/register.php" class="btn btn-primary btn-lg mt-3">Reserva tu cita</a>
         </div>

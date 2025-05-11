@@ -1,13 +1,5 @@
 <?php
-/**
- * Utilidades para mostrar mensajes al usuario
- * Proporciona funciones para mostrar mensajes de error, éxito, etc.
- */
 
-/**
- * Muestra los mensajes almacenados en la sesión
- * @return string HTML con los mensajes
- */
 function mostrarMensajes() {
     
     if (session_status() == PHP_SESSION_NONE) {
@@ -20,8 +12,8 @@ function mostrarMensajes() {
     if (isset($_SESSION['mensaje'])) {
         $tipo = isset($_SESSION['tipo_mensaje']) ? $_SESSION['tipo_mensaje'] : 'error';
         $clase = ($tipo == 'error') ? 'alert-danger' : 
-                 (($tipo == 'success') ? 'alert-success' : 
-                 (($tipo == 'info') ? 'alert-info' : 'alert-warning'));
+                (($tipo == 'success') ? 'alert-success' : 
+                (($tipo == 'info') ? 'alert-info' : 'alert-warning'));
         
         $html .= '<div class="alert ' . $clase . ' alert-dismissible fade show" role="alert">';
         $html .= $_SESSION['mensaje'];
@@ -53,12 +45,6 @@ function mostrarMensajes() {
     return $html;
 }
 
-/**
- * Obtiene el valor anterior de un campo de formulario
- * @param string $campo Nombre del campo
- * @param string $default Valor por defecto
- * @return string Valor del campo
- */
 function valorAnteriorCampo($campo, $default = '') {
     
     if (session_status() == PHP_SESSION_NONE) {
@@ -73,11 +59,6 @@ function valorAnteriorCampo($campo, $default = '') {
     return $default;
 }
 
-/**
- * Verifica si un campo tiene error
- * @param string $campo Nombre del campo
- * @return bool True si el campo tiene error
- */
 function campoTieneError($campo) {
     
     if (session_status() == PHP_SESSION_NONE) {
@@ -87,11 +68,6 @@ function campoTieneError($campo) {
     return isset($_SESSION['errores_registro']) && isset($_SESSION['errores_registro'][$campo]);
 }
 
-/**
- * Obtiene el mensaje de error de un campo
- * @param string $campo Nombre del campo
- * @return string Mensaje de error
- */
 function mensajeErrorCampo($campo) {
     
     if (session_status() == PHP_SESSION_NONE) {

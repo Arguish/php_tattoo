@@ -50,6 +50,25 @@ body {
   box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
 }
 
+/* Estilos para tabla de usuarios */
+.table {
+  background-color: var(--color-white);
+  color: var(--color-broken-black);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(34, 21, 21, 0.05);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(34, 21, 21, 0.1);
+}
+
+.thead-dark {
+  background-color: var(--color-broken-black);
+  color: var(--color-white);
+}
+
 .card-title {
   color: var(--color-red);
   font-family: "Lacquer", cursive;
