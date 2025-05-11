@@ -1,7 +1,4 @@
 <?php
-/**
- * Procesamiento del formulario de login
- */
 
 require_once '../utils/auth.php';
 require_once '../utils/validation.php';
@@ -41,17 +38,11 @@ if (!$usuario) {
 iniciarSesion($usuario, $recordar);
 
 switch ($usuario['rol']) {
-    case 'admin':
-        header('Location: ../pages/admin/index.php');
-        break;
-    case 'artista':
-        header('Location: ../pages/artista/index.php');
-        break;
-    case 'recepcionista':
-        header('Location: ../pages/recepcionista/index.php');
+    case 'cliente':
+        header('Location: ../index.php');
         break;
     default:
-        header('Location: ../pages/index.php');
+        header('Location: ../pages/dashboard');
         break;
 }
 exit;

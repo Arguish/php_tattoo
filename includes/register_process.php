@@ -1,7 +1,4 @@
 <?php
-/**
- * Procesamiento del formulario de registro
- */
 
 require_once '../utils/auth.php';
 require_once '../utils/validation.php';

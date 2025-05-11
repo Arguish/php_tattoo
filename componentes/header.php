@@ -31,7 +31,7 @@ $usuario_autenticado = estaLogueado();
                     </li>
                     <?php if ($usuario_autenticado): ?>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" <?php echo $active_page === 'dashboard' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/<?php echo strtolower($_SESSION['usuario_rol']); ?>/index.php">Mi cuenta</a>
+                        <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" <?php echo $active_page === 'dashboard' ? 'aria-current="page"' : ''; ?> href="<?php echo $base_path; ?>pages/dashboard">Mi cuenta</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $base_path; ?>includes/logout.php">Cerrar Sesión</a>

@@ -1,17 +1,7 @@
 <?php
-/**
- * Utilidades para autenticación de usuarios
- * Proporciona funciones para login, registro y validación de usuarios
- */
 
 require_once __DIR__ . '/../services/usuarios.php';
 
-/**
- * Valida las credenciales de un usuario
- * @param string $email Email del usuario
- * @param string $password Contraseña del usuario
- * @return array|false Datos del usuario si las credenciales son válidas, false en caso contrario
- */
 function validarCredenciales($email, $password) {
     try {
         
@@ -96,12 +86,6 @@ function validarCredenciales($email, $password) {
     }
 }
 
-/**
- * Inicia sesión para un usuario
- * @param array $usuario Datos del usuario
- * @param bool $recordar Si se debe recordar la sesión
- * @return bool True si se inició sesión correctamente
- */
 function iniciarSesion($usuario, $recordar = false) {
     
     if (session_status() == PHP_SESSION_NONE) {
@@ -129,10 +113,6 @@ function iniciarSesion($usuario, $recordar = false) {
     return true;
 }
 
-/**
- * Cierra la sesión del usuario
- * @return bool True si se cerró sesión correctamente
- */
 function cerrarSesion() {
     
     if (session_status() == PHP_SESSION_NONE) {
@@ -153,12 +133,6 @@ function cerrarSesion() {
     session_destroy();
 }
 
-/**
- * Actualiza el hash de la contraseña de un usuario al formato seguro actual
- * @param int $usuarioId ID del usuario
- * @param string $password Contraseña en texto plano
- * @return bool True si se actualizó correctamente
- */
 function actualizarHashContraseña($usuarioId, $password) {
     try {
         
@@ -197,11 +171,6 @@ function actualizarHashContraseña($usuarioId, $password) {
     
 
 
-/**
- * Verifica si un email ya está registrado
- * @param string $email Email a verificar
- * @return bool True si el email ya está registrado
- */
 function emailExiste($email) {
     try {
         $pdo = getConnection();
@@ -217,11 +186,6 @@ function emailExiste($email) {
     }
 }
 
-/**
- * Valida los datos de registro de un usuario
- * @param array $datos Datos del formulario de registro
- * @return array Array con errores encontrados, vacío si no hay errores
- */
 function validarDatosRegistro($datos) {
     $errores = [];
     
@@ -283,4 +247,17 @@ function estaLogueado() {
         session_start();
     }  
     return isset($_SESSION['autenticado']) && $_SESSION['autenticado'] === true;
+}
+
+function checkRole($rolesPermitidos) {
+    logDebug('Roles permitidos: '. print_r($rolesPermitidos, true));
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    } 
+    $rolUsuario = $_SESSION['usuario_rol'] ?? null;
+    logDebug('Rol del usuario: '. print_r($_SESSION));
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        return false;
+    }
+    return in_array($rolUsuario, (array)$rolesPermitidos, true);
 }

@@ -1,16 +1,76 @@
 <?php
-/**
- * Servicio CRUD para la tabla usuarios
- * Proporciona funciones para crear, leer, actualizar y eliminar usuarios
- */
 
 require_once 'db_connection.php';
+require_once __DIR__ . '/../utils/auth.php';
+require_once __DIR__. '/../utils/logger.php';
 
-/**
- * Obtiene todos los usuarios
- * @param string $rol Filtrar por rol (opcional)
- * @return array|false Array de usuarios o false en caso de error
- */
+// Manejar acciones
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action'])) {
+    header('Content-Type: application/json');
+    
+    try {
+        logDebug('Intentando procesar acción: '. $_REQUEST['action']);
+
+
+        switch ($_REQUEST['action']) {
+            case 'create':
+                if (!checkRole(['admin'])) {
+                    throw new Exception('Acceso denegado: se requieren privilegios de administrador');
+                }
+                logDebug('Intentando crear usuario con datos: '. json_encode($_REQUEST));
+                $success=crearUsuario($_REQUEST);
+                echo json_encode(['success' => $success]);
+                exit;
+
+            case 'update':
+                if (!checkRole(['admin'])) {
+                    throw new Exception('Acceso denegado: se requieren privilegios de administrador');
+                }
+                if (empty($_REQUEST['id'])) {
+                    throw new Exception('ID de usuario requerido');
+                }
+                $success = actualizarUsuario($_REQUEST['id'], $_REQUEST);
+                echo json_encode(['success' => $success]);
+                exit;
+
+            case 'read':
+                logDebug('Intentando obtener usuario con ID: '. $_REQUEST['id']);
+                $id = $_REQUEST['id'] ?? null;
+                if ($id) {
+                    $usuario = obtenerUsuarioPorId($id);
+                    logDebug('Usuario obtenido: '. ($usuario));
+                    echo json_encode($usuario ?: ['error' => 'Usuario no encontrado']);
+                } else {
+                    $usuarios = obtenerUsuarios();
+                    logDebug('Usuarios obtenidos: ');
+                    echo json_encode($usuarios ?: ['error' => 'Error al obtener usuarios']);
+                }
+                exit;
+
+            case 'delete':
+                if (!checkRole(['admin'])) {
+                    throw new Exception('Acceso denegado: se requieren privilegios de administrador');
+                }
+                logDebug('Intentando eliminar usuario con ID: '. $_REQUEST['id']);
+                if (empty($_REQUEST['id'])) {
+                    throw new Exception('ID de usuario requerido');
+                }
+                if (!eliminarUsuarioFisico($_REQUEST['id'])) {
+                    throw new Exception('Error al eliminar el usuario');
+                }
+                echo json_encode(['success' => true]);
+                exit;
+
+            default:
+                throw new Exception('Acción no válida');
+        }
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+        exit;
+    }
+}
+
 function obtenerUsuarios($rol = null) {
     try {
         $pdo = getConnection();
@@ -33,11 +93,6 @@ function obtenerUsuarios($rol = null) {
     }
 }
 
-/**
- * Obtiene un usuario por su ID
- * @param int $id ID del usuario
- * @return array|false Datos del usuario o false en caso de error
- */
 function obtenerUsuarioPorId($id) {
     try {
         $pdo = getConnection();
@@ -52,11 +107,6 @@ function obtenerUsuarioPorId($id) {
     }
 }
 
-/**
- * Crea un nuevo usuario
- * @param array $datos Datos del usuario (nombre, email, password, rol, telefono)
- * @return int|false ID del usuario creado o false en caso de error
- */
 function crearUsuario($datos) {
     try {
         if (!function_exists('logDebug')) {
@@ -70,7 +120,7 @@ function crearUsuario($datos) {
         }
         
         
-        if (empty($datos['nombre']) || empty($datos['email']) || empty($datos['password']) || empty($datos['rol'])) {
+        if (empty($datos['nombre']) || empty($datos['email']) || empty($datos['rol'])) {
             logWarning('Datos incompletos al crear usuario', $datos);
             return false;
         }
@@ -78,7 +128,12 @@ function crearUsuario($datos) {
         
         $nombre = sanitizeInput($datos['nombre']);
         $email = sanitizeInput($datos['email']);
-        $password = password_hash($datos['password'], PASSWORD_DEFAULT); 
+        if ($datos['action']){
+            $password = password_hash(123456, PASSWORD_DEFAULT); 
+            logWarning('Asignada contraseña por defecto');
+        }else{
+            $password = password_hash($datos['password'], PASSWORD_DEFAULT); 
+        }
         $rol = sanitizeInput($datos['rol']);
         $telefono = isset($datos['telefono']) ? sanitizeInput($datos['telefono']) : null;
         
@@ -103,12 +158,6 @@ function crearUsuario($datos) {
     }
 }
 
-/**
- * Actualiza un usuario existente
- * @param int $id ID del usuario
- * @param array $datos Datos a actualizar
- * @return bool True si se actualizó correctamente, false en caso contrario
- */
 function actualizarUsuario($id, $datos) {
     try {
         $pdo = getConnection();
@@ -166,11 +215,6 @@ function actualizarUsuario($id, $datos) {
     }
 }
 
-/**
- * Elimina un usuario (desactivación lógica)
- * @param int $id ID del usuario
- * @return bool True si se desactivó correctamente, false en caso contrario
- */
 function eliminarUsuario($id) {
     try {
         $pdo = getConnection();
@@ -187,31 +231,44 @@ function eliminarUsuario($id) {
     }
 }
 
-/**
- * Elimina físicamente un usuario de la base de datos
- * @param int $id ID del usuario
- * @return bool True si se eliminó correctamente, false en caso contrario
- */
 function eliminarUsuarioFisico($id) {
     try {
         $pdo = getConnection();
-        if (!$pdo) return false;
+        if (!$pdo) {
+            logError('Conexión DB fallida en eliminarUsuarioFisico');
+            return false;
+        }
+
+        $pdo->beginTransaction();
+
+        // Eliminar facturas relacionadas primero
+        $stmtFacturas = $pdo->prepare("DELETE FROM facturas WHERE reserva_id IN (SELECT id FROM reservas WHERE cliente_id = ?)");
+        $stmtFacturas->execute([intval($id)]);
+
+        // Eliminar reservas relacionadas
+        $stmtReservas = $pdo->prepare("DELETE FROM reservas WHERE cliente_id = ?");
+        $stmtReservas->execute([intval($id)]);
+
+        // Eliminar usuario
+        $stmtUsuario = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
+        $stmtUsuario->execute([intval($id)]);
         
-        $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = ?");
-        $stmt->execute([$id]);
+        $affected = $stmtUsuario->rowCount();
+        $pdo->commit();
         
-        return $stmt->rowCount() > 0;
+        logDebug("Filas afectadas al eliminar: ".$affected);
+        return $affected > 0;
     } catch (PDOException $e) {
-        error_log('Error al eliminar físicamente usuario: ' . $e->getMessage());
+        $pdo->rollBack();
+        logError('Error DB eliminación física: '.$e->getMessage().' ID: '.$id);
+        return false;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        logError('Error general: '.$e->getMessage());
         return false;
     }
 }
 
-/**
- * Busca usuarios por nombre, apellido o email
- * @param string $termino Término de búsqueda
- * @return array|false Resultados de la búsqueda o false en caso de error
- */
 function buscarUsuarios($termino) {
     try {
         $pdo = getConnection();
