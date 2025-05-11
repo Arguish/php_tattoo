@@ -1,8 +1,4 @@
 <?php
-/**
- * Sistema de logging para la aplicación
- * Proporciona funciones para registrar errores y depuración
- */
 
 
 if (!function_exists('getenv') || !getenv('DB_HOST')) {
@@ -17,12 +13,6 @@ if (!defined('LOG_WARNING')) define('LOG_WARNING', 'WARNING');
 if (!defined('LOG_INFO')) define('LOG_INFO', 'INFO');
 if (!defined('LOG_DEBUG')) define('LOG_DEBUG', 'DEBUG');
 
-/**
- * Registra un mensaje en el log del sistema
- * @param string $mensaje Mensaje a registrar
- * @param string $nivel Nivel del mensaje (ERROR, WARNING, INFO, DEBUG)
- * @param array $contexto Datos adicionales para el mensaje
- */
 function logMessage($mensaje, $nivel = LOG_ERROR, $contexto = []) {
     
     $dev_mode = isset($_ENV['DEV_MODE']) && $_ENV['DEV_MODE'] === 'true';
@@ -47,7 +37,7 @@ function logMessage($mensaje, $nivel = LOG_ERROR, $contexto = []) {
     }
     
     
-    $logPath = $_ENV['LOG_PATH'] ?? 'logs';
+    $logPath = dirname(__DIR__) . '/logs';
 if (!is_dir($logPath)) {
     mkdir($logPath, 0755, true);
 }
@@ -70,37 +60,17 @@ if ($logHandle) {
     }
 }
 
-/**
- * Registra un error
- * @param string $mensaje Mensaje de error
- * @param array $contexto Datos adicionales para el mensaje
- */
 function logError($mensaje, $contexto = []) {
     logMessage($mensaje, LOG_ERROR, $contexto);
 }
 
-/**
- * Registra una advertencia
- * @param string $mensaje Mensaje de advertencia
- * @param array $contexto Datos adicionales para el mensaje
- */
 function logWarning($mensaje, $contexto = []) {
     logMessage($mensaje, LOG_WARNING, $contexto);
 }
 
-/**
- * Registra información
- * @param string $mensaje Mensaje informativo
- * @param array $contexto Datos adicionales para el mensaje
- */
 function logInfo($mensaje, $contexto = []) {
     logMessage($mensaje, LOG_INFO, $contexto);
 }
-/**
- * Registra un mensaje de depuración (solo en modo desarrollo)
- * @param string $mensaje Mensaje de depuración
- * @param array $contexto Datos adicionales para el mensaje
- */
 function logDebug($mensaje, $contexto = []) {
     logMessage($mensaje, LOG_DEBUG, $contexto);
 }
