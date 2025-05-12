@@ -29,7 +29,7 @@ $servicios = obtenerServicios();
                 <select name="cliente_id" class="form-select" required>
                     <option value="">Seleccione un cliente</option>
                     <?php foreach ($clientes as $cliente): ?>
-                        <option value="<?= $cliente['id'] ?>"><?= htmlspecialchars($cliente['nombre'] . ' ' . ($cliente['apellido'] ?? '')) ?></option>
+                        <option value="<?= $cliente['id'] ?>"><?= htmlspecialchars($cliente['nombre']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -39,7 +39,7 @@ $servicios = obtenerServicios();
                 <select name="artista_id" class="form-select" required>
                     <option value="">Seleccione un artista</option>
                     <?php foreach ($artistas as $artista): ?>
-                        <option value="<?= $artista['id'] ?>"><?= htmlspecialchars($artista['nombre'] . ' ' . ($artista['apellido'] ?? '')) ?></option>
+                        <option value="<?= $artista['id'] ?>"><?= htmlspecialchars($artista['nombre']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -88,8 +88,8 @@ $servicios = obtenerServicios();
                         <?php foreach ($reservas as $reserva): ?>
                             <tr>
                                 <td><?= htmlspecialchars($reserva['id']) ?></td>
-                                <td><?= htmlspecialchars($reserva['cliente_nombre'] . ' ' . $reserva['cliente_apellido']) ?></td>
-                                <td><?= htmlspecialchars($reserva['artista_nombre'] . ' ' . $reserva['artista_apellido']) ?></td>
+                                <td><?= htmlspecialchars($reserva['cliente_nombre']) ?></td>
+                                <td><?= htmlspecialchars($reserva['artista_nombre']) ?></td>
                                 <td><?= htmlspecialchars($reserva['servicio_nombre']) ?> - <?= htmlspecialchars($reserva['servicio_precio']) ?>€</td>
                                 <td><?= date('d/m/Y H:i', strtotime($reserva['fecha_hora'])) ?></td>
                                 <td><span class="badge bg-<?= getEstadoBadgeClass($reserva['estado']) ?>"><?= htmlspecialchars($reserva['estado']) ?></span></td>

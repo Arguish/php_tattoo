@@ -4,6 +4,8 @@
 require_once 'db_connection.php';
 require_once __DIR__ . '/../utils/auth.php';
 require_once __DIR__ . '/../utils/logger.php';
+require_once __DIR__ . '/../mail/sendMail.php';
+require_once __DIR__ . '/../mail/citaConfirmada.php';
 
 logDebug('Intentando procesar acción con request: ' . json_encode($_REQUEST));
 
@@ -28,8 +30,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action']) && isset
                     }
                 }
                 logDebug('Intentando crear reserva con datos: ' . json_encode($_REQUEST));
-                $success = crearReserva($_REQUEST);
-                echo json_encode(['success' => $success]);
+                $reservaId = crearReserva($_REQUEST);
+                echo json_encode(['success' => $reservaId]);
+
+                logDebug("Intentando enviar correo de confirmación de reserva");
+                logDebug("Datos de la reserva: " . json_encode($reservaId));
+
+                if ($reservaId) {
+                    // Obtener datos completos de la reserva recién creada
+                    $reserva = obtenerReservaPorId($reservaId);
+
+                    logDebug("Intentando enviar correo con datos: " . json_encode($reserva));
+
+                    if ($reserva) {
+                        // Obtener email del cliente
+                        $pdo = getConnection();
+                        $stmt = $pdo->prepare("SELECT email FROM usuarios WHERE id = ?");
+                        $stmt->execute([$reserva['cliente_id']]);
+                        $emailCliente = $stmt->fetchColumn();
+
+                        // Formatear fecha y hora
+                        $fechaHora = $reserva['fecha_hora'];
+                        $observaciones = $reserva['observaciones'] ?? '';
+
+                        $mail = setupMail([
+                            'subject' => 'Confirmación de Reserva',
+                            //'to' => $emailCliente,
+                            'to' => "jhergon8@gmail.com",
+                            'body' => generarEmailCitaConfirmada(
+                                $reserva['cliente_nombre'],
+                                $fechaHora,
+                                $reserva['artista_nombre'],
+                                $reserva['servicio_nombre'],
+                                $observaciones
+                            )
+                        ]);
+                        $mail->send();
+                    }
+                }
                 exit;
 
             case 'update':
@@ -231,6 +269,8 @@ function crearReserva($datos)
         $stmt = $pdo->prepare("INSERT INTO reservas (cliente_id, artista_id, servicio_id, fecha_hora, estado, observaciones) 
                             VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$clienteId, $artistaId, $servicioId, $fechaHora, $estado, $observaciones]);
+
+        logDebug('Reserva creada con ID: ' . $pdo->lastInsertId());
 
         return $pdo->lastInsertId();
     } catch (PDOException $e) {
