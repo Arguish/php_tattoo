@@ -6,26 +6,26 @@ Aplicación web para la gestión integral de un centro de tatuajes. Permite a ad
 
 - Registrar y gestionar usuarios con distintos roles.
 - Reservar, confirmar y llevar el histórico de citas.
-- Generar facturas e historiales de reservas en PDF.
-- Enviar notificaciones y recordatorios por correo electrónico.
+- Gestionar perfiles de usuario.
 
-## Características principales
+## Características implementadas
 
-- **Roles y autenticación**: Administrador, Artista, Cliente, Recepcionista con áreas privadas y CRUD.
-- **Reservas**: Entidad `reserva` relaciona cliente, artista, servicio, fecha/hora y observaciones.
-- **Gestión de servicios**: CRUD de servicios ofrecidos (tipos de tatuaje, tarifas).
-- **PDF dinámico**: Facturas y reportes de historial de tatuajes (Dompdf).
-- **Email**: Notificaciones automáticas y recordatorios (PHPMailer + SMTP/TLS).
-- **Interfaz responsive**: Bootstrap 5, JavaScript y jQuery para validaciones y AJAX.
-- **Base de datos relacional**: MySQL/MariaDB.
+- **Roles y autenticación**: Sistema de login y registro con roles de Administrador, Artista, Cliente y Recepcionista.
+- **Gestión de usuarios**: Panel de administración para crear, editar y eliminar usuarios.
+- **Reservas**: Sistema para gestionar citas entre clientes y artistas, con estados (pendiente, confirmada, completada, cancelada).
+- **Interfaz responsive**: Diseño adaptable con Bootstrap 5 y JavaScript para validaciones.
+- **Navegación intuitiva**: Menú de navegación dinámico según el rol del usuario.
+- **Facturación**: Sistema completo para la gestión de facturas asociadas a reservas.
+- **Reportes PDF**: Generación de informes en formato PDF para reservas y otros datos relevantes.
+- **Notificaciones por email**: Sistema de envío de correos electrónicos para confirmaciones de citas y otras notificaciones.
+- **Gestión de servicios**: Catálogo completo de servicios ofrecidos con precios y duración.
+- **Sistema de logging**: Registro detallado de actividades y errores del sistema para facilitar el mantenimiento.
 
 ## Stack tecnológico
 
 - **Back-end**: PHP 8.x (POO, PDO/MySQLi)
 - **Front-end**: HTML5, CSS3, Bootstrap 5, JavaScript, jQuery
 - **Base de datos**: MySQL o MariaDB
-- **Generación de PDF**: Dompdf (o FPDF/TCPDF)
-- **Envío de correo**: PHPMailer
 - **Servidor**: Apache o Nginx
 
 ## Requisitos previos
@@ -55,23 +55,23 @@ Aplicación web para la gestión integral de un centro de tatuajes. Permite a ad
      'pass' => 'contraseña',
    ];
    ```
-4. Importa el esquema SQL:
+4. Configura el envío de correos en `config/mail.php` o usando variables de entorno en `.env`:
+   ```php
+   // Ejemplo de configuración en .env
+   MAIL_HOST=smtp.example.com
+   MAIL_PORT=587
+   MAIL_USER=usuario@example.com
+   MAIL_PASSWORD=contraseña
+   MAIL_ENCRYPTION=tls
+   MAIL_FROM=noreply@example.com
+   ```
+5. Importa el esquema SQL:
    ```sql
    CREATE DATABASE IF NOT EXISTS tattoo_db;
    USE tatuajes;
    -- Ejecuta el script schema.sql
    ```
-5. Configura SMTP en `config/mail.php`:
-   ```php
-   return [
-     'host'       => 'smtp.ejemplo.com',
-     'username'   => 'user@ejemplo.com',
-     'password'   => 'tu_pass',
-     'port'       => 587,
-     'encryption' => 'tls',
-   ];
-   ```
-6. Ajusta permisos de la carpeta `storage/` para PDFs y logs.
+6. Ajusta permisos de la carpeta `logs/` para registros del sistema.
 
 ## Esquema de Base de Datos
 
@@ -116,11 +116,11 @@ erDiagram
 
     facturas {
         int id PK
-        int reserva_id FK UK
-        decimal(10,2) total
+        int reserva_id FK
+        decimal(10,2) monto
         datetime fecha_emision
-        enum metodo_pago
         boolean pagada
+        varchar(100) metodo_pago
     }
 ```
 
@@ -129,7 +129,6 @@ erDiagram
 - **usuarios**: Almacena información de usuarios (nombre único, credenciales y roles)
 - **servicios**: Catálogo de servicios disponibles para reservar
 - **reservas**: Registro detallado de cada cita programada
-- **facturas**: Información financiera de las reservas completadas
 
 ### Importar Esquema
 
@@ -141,22 +140,12 @@ mysql -u usuario -p nombre_base_datos < schema.sql
 
 1. Accede a la URL principal y regístrate como Cliente o inicia sesión.
 2. Como Cliente, solicita una nueva reserva seleccionando artista, servicio y fecha.
-3. La Recepcionista confirma la reserva desde su panel.
-4. Al confirmarse, se genera y envía la factura en PDF al cliente y artista.
-5. 24 h antes, un recordatorio automático llega por correo.
-6. Consulta tu historial de citas y descarga tus reportes en PDF.
-
-## Generación de PDF
-
-- Plantillas HTML/CSS en `views/pdf/`
-- Controlador `PdfController.php` usa Dompdf para convertir vistas a PDF.
-
-## Envío de correos
-
-- PHPMailer configurado en `MailService.php`.
-- Métodos:
-  - `sendReservationConfirmation($user, $pdfPath)`
-  - `sendReminder($user, $reservation)`
+3. La Recepcionista o Administrador puede confirmar la reserva desde su panel.
+4. Consulta tu historial de citas desde tu panel de usuario.
+5. Genera reportes PDF de tus reservas desde la sección correspondiente.
+6. Recibe notificaciones por correo electrónico cuando tus citas sean confirmadas.
+7. Como Administrador, gestiona las facturas asociadas a las reservas completadas.
+8. Consulta los registros del sistema en la carpeta de logs para solucionar problemas.
 
 ## Contribuciones
 

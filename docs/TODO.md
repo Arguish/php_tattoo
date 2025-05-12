@@ -1,98 +1,47 @@
 # TODO.md
 
-Lista de tareas organizadas por apartados para el proyecto "Gestión de Centro de Tatuajes".
+Lista de tareas completadas para el proyecto "Gestión de Centro de Tatuajes".
 
 ## 📦 Configuración del Entorno
 
 - [x] Instalar PHP 8.x y extensiones necesarias (pdo, mbstring)
 - [x] Configurar servidor web (Apache/Nginx)
 - [x] Instalar MySQL/MariaDB y crear usuario de base de datos
-- [x] Instalar Composer y dependencias (Dompdf, PHPMailer)
+- [x] Instalar Composer y dependencias
 - [x] Configurar archivo `config/database.php` con credenciales
-- [x] Configurar archivo `config/mail.php` con datos SMTP
-- [x] Ajustar permisos de carpetas `storage/` y `logs/`
+- [x] Ajustar permisos de carpetas `logs/`
 
 ## 🗄️ Base de Datos
 
-- [ ] Definir y documentar el esquema ER
-- [x] Crear script SQL `schema.sql` para tablas: `usuarios`, `servicios`, `reservas`, `facturas`
-- [ ] Probar importación del esquema en entorno local
-- [ ] Escribir migraciones (opcional) para versiones futuras
+- [x] Crear script SQL `schema.sql` para tablas: `usuarios`, `servicios`, `reservas`
 
 ## 🔐 Autenticación y Roles
 
-- [ ] Implementar sistema de registro y login (sessions)
-- [ ] Crear middleware / control de acceso por rol
-- [ ] Panel de administración de usuarios (CRUD roles)
-- [ ] Validar campos y gestionar contraseñas con hashing (password_hash)
-
-## 💼 Gestión de Servicios
-
-- [ ] CRUD de `servicios` en back‑end (PHP)
-- [ ] Formularios Bootstrap para creación/edición de servicios
-- [ ] Validaciones con JavaScript/jQuery y server‑side
-- [ ] Listado de servicios en panel de Admin y Artista
+- [x] Implementar sistema de registro y login (sessions)
+- [x] Crear control de acceso por rol
+- [x] Panel de administración de usuarios (CRUD)
+- [x] Validar campos y gestionar contraseñas con hashing
 
 ## 📅 Reservas (Entidad Cita)
 
-- [ ] CRUD de `reservas` en back‑end
-- [ ] Formulario de reserva para Cliente (selección artista, servicio, fecha, obs.)
-- [ ] Calendario de disponibilidad de artistas (Bootstrap calendar o plugin)
-- [ ] Validación de conflictos de horario (AJAX request)
-- [ ] Panel de Recepcionista para confirmar/rechazar reservas
+- [x] CRUD de `reservas` en back‑end
+- [x] Formulario de reserva para Cliente (selección artista, servicio, fecha, obs.)
+- [x] Panel para confirmar/rechazar reservas
 
 ## 🖥️ Front‑end UI
 
 - [x] Maquetación de layout principal con Bootstrap
-- [ ] Navbar dinámica según rol logueado
-- [ ] Páginas de dashboard por rol (Admin, Artista, Cliente, Recepcionista)
-- [ ] Tablas responsivas de reservas y facturas
-- [ ] Modal de detalles y generación de PDF
-- [ ] Implementar AJAX para operaciones CRUD sin refrescar
-
-## 📜 Generación de PDF
-
-- [ ] Crear vistas HTML/CSS para factura y historial de reservas (`views/pdf/`)
-- [ ] Integrar Dompdf en `PdfController.php`
-- [ ] Método `generateInvoice($reservaId)`
-- [ ] Método `generateHistory($clienteId)`
-- [ ] Pruebas de calidad de PDF (fuentes, saltos de página)
-
-## ✉️ Envío de Correos
-
-- [ ] Configurar PHPMailer en `MailService.php`
-- [ ] Método `sendReservationConfirmation($user, $pdfPath)`
-- [ ] Método `sendReminder($user, $reservation)`
-- [ ] Programar cron job para recordatorios 24 h antes
-- [ ] Plantillas de correo (HTML/text) en `views/emails/`
-- [ ] Pruebas de envío en entorno de desarrollo
-
-## 🧪 Pruebas y Calidad
-
-- [ ] Test de unidad para funciones críticas (PHPUnit)
-- [ ] Test de integración de reservas y notificaciones
-- [ ] Pruebas manuales de flujos por cada rol
-- [ ] Validar seguridad: SQLi, XSS, CSRF tokens
-- [ ] Revisar logs y manejar errores/graceful fallback
-
-## 🚀 Despliegue
-
-- [ ] Preparar script de despliegue (rsync, git hooks)
-- [ ] Configurar entorno de producción (variables, SSL)
-- [ ] Configurar backups automáticos de base de datos
-- [ ] Documentar pasos de despliegue en `DEPLOY.md`
+- [x] Navbar dinámica según rol logueado
+- [x] Páginas de dashboard por rol (Admin, Artista, Cliente, Recepcionista)
+- [x] Tablas responsivas de reservas
 
 ## 📖 Documentación
 
-- [ ] Completar `README.md` con ejemplos de uso
-- [ ] Documentar endpoints API (si aplica)
-- [ ] Crear guía de estilo de código y convenciones
-- [ ] Añadir diagramas (ER, casos de uso)
+- [x] Completar `README.md` con ejemplos de uso
 
-## 🔧 Mantenimiento y Extensiones
+## Próximas mejoras
 
-- [ ] Añadir logs de actividad de usuarios
-- [ ] Panel de estadísticas (nº reservas, ingresos)
-- [ ] Exportar datos CSV/Excel
-- [ ] Internacionalización (i18n) de la interfaz
-- [ ] Soporte de múltiples centros/sucursales
+- Generación de PDF para facturas e historiales
+- Envío de correos para notificaciones y recordatorios
+- Estadísticas y reportes avanzados
+- Exportación de datos
